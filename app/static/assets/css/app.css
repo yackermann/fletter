@@ -1,0 +1,32 @@
+    .top-bar {
+        margin-bottom: 2em;
+    }
+
+/* ----- Post section ----- */
+    .post {
+        border: 3px solid lightgray;
+        padding: 1em;
+        margin-bottom: 1em;
+    }
+
+    .post__header {
+        font-size: 1em;
+    }
+
+/* ----- Adding new post ----- */
+    .post__content {
+        margin: 0;
+    }
+    .post__new_post_form {}
+
+    .post__new_post {
+        margin: 0;
+    }
+
+    .post__new_post-submit {
+        margin: 0;
+        float: right;
+    }
+    .post__spacer {
+        margin: 0 auto;
+    }
