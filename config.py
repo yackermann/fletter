@@ -8,7 +8,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 DATABASE = 'fletter.db'
 DEBUG = True
-SECRET_KEY = 'you-will-never-guess'
+SECRET_KEY = 'secret_key'
 USERNAME = 'admin'
 PASSWORD = 'admin'
 
