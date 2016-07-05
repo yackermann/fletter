@@ -16,3 +16,10 @@ class Post(db.Model):
 
     def __repr__(self):
         return '<post {}>'.format(self.id)
+
+    def json(self):
+        return {
+            'id' : self.id,
+            'text' : self.text,
+            'timestamp' : self.timestamp
+        }
