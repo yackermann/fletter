@@ -65,7 +65,7 @@
 /* ----- Templates ----- */
     var $render = {
         'post' : function (data) {
-            return '<article class="row medium-6 large-6 columns post">'
+            return '<article id="post-id-' + data.id + '" class="row medium-6 large-6 columns post">'
                     +    '<header>'
                     +        '<h1 class="post__header"><a href="#">Bob Tester</a> | ' + data.timestamp + '</h1>'
                     +    '</header>'
