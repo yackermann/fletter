@@ -49,6 +49,14 @@ def edit_post(post_id):
     return jsonify({'status' : 'ok'}, {'post' : post.json()}), 201
 
 @app.route('/post/<int:post_id>', methods=['DELETE'])
-def remove_post():
-    pass
+def remove_post(post_id):
+    """Delete post in the database."""
+    post = models.Post.query.get(post_id)
 
+    if post is None:
+        return jsonify({'status' : 'failed'}), 400
+
+    db.session.delete(post)
+    db.session.commit()
+
+    return jsonify({'status' : 'ok'}), 201
