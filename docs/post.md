@@ -5,7 +5,7 @@
     * [Get all posts](#get-posts)
     * [Get post specified by ID](#get-post)
     * [Add new post](#add-new-post)
-    * [Edit post specified by ID]()
+    * [Edit post specified by ID](#edit-post)
     * [Delete post specified by ID]()
     
 **Get posts**
@@ -159,6 +159,80 @@ Adds new post
         ```
  
 * **Error Response:**
+
+    * **Code:** 400 BAD REQUEST
+
+        ```javascript
+        {  
+            status : "failed", 
+            error  : "Text is missing!"
+        }
+        ```
+
+    * **Code:** 413 REQUEST ENTITY TOO LARGE
+
+        ```javascript
+        {  
+            status : "failed", 
+            error  : "Text is longer than 140 chars!"
+        }
+        ```
+
+
+* **Sample Call:**
+
+    ```javascript
+    ```
+
+**Edit post**
+----
+Edit existing post
+
+* **URL**
+
+    * /post/:id
+
+* **Method:**
+
+     * `POST`
+    
+*  **URL Params**
+
+    * `id=[integer]`
+
+* **Data Params**
+
+    ```javascript
+        {
+            text : 'Goodbye World!'
+        }
+    ```
+
+* **Success Response:**
+
+    * **Code:** 200 OK
+
+        ```javascript
+        {  
+            status : "ok", 
+            post   : { 
+                id   : 34,
+                text : "Goodbye World!",
+                timestamp : 1467695707
+            }
+        }
+        ```
+ 
+* **Error Response:**
+
+    * **Code:** 404 NOT FOUND
+
+        ```javascript
+        {  
+            status : "failed", 
+            error  : "Post not found!"
+        }
+        ```
 
     * **Code:** 400 BAD REQUEST
 
