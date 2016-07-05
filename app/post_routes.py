@@ -59,4 +59,4 @@ def remove_post(post_id):
     db.session.delete(post)
     db.session.commit()
 
-    return jsonify({'status' : 'ok'}), 201
+    return jsonify({'status' : 'ok'}), 200
