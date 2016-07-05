@@ -27,35 +27,35 @@
     }
 
     var $api = {
-        'get' : function (ID) {
+        'get' : function (ID, CALLBACK) {
             _URL = _post_api_url;
             if(ID && typeof ID === 'number')
                 _URL += '/' + ID;
 
-            $make_request(_URL, 'GET', {}, (data) => console.log(data));
+            $make_request(_URL, 'GET', {}, CALLBACK);
         },
 
-        'add' : function (DATA) {
-            $make_request(_post_api_url, 'POST', DATA, (data) => console.log(data));
+        'add' : function (DATA, CALLBACK) {
+            $make_request(_post_api_url, 'POST', DATA, CALLBACK);
         },
 
 
-        'update' : function (ID, DATA) {
+        'update' : function (ID, DATA, CALLBACK) {
             if (typeof ID !== 'number' || !DATA)
                 // throw Error
             else {
                 _URL = _post_api_url + '/' + ID;
-                $make_request(_URL, 'PUT', DATA, (data) => console.log(data));
+                $make_request(_URL, 'PUT', DATA, CALLBACK);
             }
         },
 
-        'delete' : function (ID) {
+        'delete' : function (ID, CALLBACK) {
             if (typeof ID !== number)
                 // throw Error
                 console.log('ID is no set')
             else {
                 _URL = _post_api_url + '/' + ID;
-                $make_request(_URL, 'DELETE', {}, (data) => console.log(data));
+                $make_request(_URL, 'DELETE', {}, CALLBACK);
             }
         }
     }
@@ -65,6 +65,6 @@
         var content = $(_new_post_field, this).val();
 
         if(content && content.length <= _new_post__size_limit)
-            $api.add({'text': content});
+            $api.add({'text': content}, (data) => console.log(data));
     })
 })()
