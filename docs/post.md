@@ -257,4 +257,52 @@ Edit existing post
 
     ```javascript
     ```
+
+
+**Delete post**
+----
+Deletes existing post
+
+* **URL**
+
+    * /post/:id
+
+* **Method:**
+
+     * `DELETE`
     
+*  **URL Params**
+
+    * `id=[integer]`
+
+* **Data Params**
+
+    * None
+
+* **Success Response:**
+
+    * **Code:** 200 OK
+
+        ```javascript
+        {  
+            status : "ok"
+        }
+        ```
+ 
+* **Error Response:**
+
+    * **Code:** 404 NOT FOUND
+
+        ```javascript
+        {  
+            status : "failed", 
+            error  : "Post not found!"
+        }
+        ```
+
+
+* **Sample Call:**
+
+    ```javascript
+    ```
+
