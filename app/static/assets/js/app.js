@@ -4,6 +4,7 @@
     _post_api_url         = '/post';
 
     $new_post_form        = $('#new_post');
+    $new_post_container   = $('.posts');
     _new_post_field       = '.post__new_post';
     _new_post__size_limit = 140;
 
@@ -32,7 +33,7 @@
             if(ID && typeof ID === 'number')
                 _URL += '/' + ID;
 
-            $make_request(_URL, 'GET', {}, CALLBACK);
+            $make_request(_URL, 'GET', undefined, CALLBACK);
         },
 
         'add' : function (DATA, CALLBACK) {
@@ -41,24 +42,44 @@
 
 
         'update' : function (ID, DATA, CALLBACK) {
-            if (typeof ID !== 'number' || !DATA)
+            if (typeof ID !== 'number' || !DATA){
                 // throw Error
-            else {
+                console.log('ID is no set');
+            } else {
                 _URL = _post_api_url + '/' + ID;
                 $make_request(_URL, 'PUT', DATA, CALLBACK);
             }
         },
 
         'delete' : function (ID, CALLBACK) {
-            if (typeof ID !== number)
+            if (typeof ID !== number){
                 // throw Error
-                console.log('ID is no set')
-            else {
+                console.log('ID is no set');
+            } else {
                 _URL = _post_api_url + '/' + ID;
                 $make_request(_URL, 'DELETE', {}, CALLBACK);
             }
         }
     }
+
+/* ----- Templates ----- */
+    var $render = {
+        'post' : function (data) {
+            return '<article class="row medium-6 large-6 columns post">'
+                    +    '<header>'
+                    +        '<h1 class="post__header"><a href="#">Bob Tester</a> | ' + data.timestamp + '</h1>'
+                    +    '</header>'
+                    +    '<section>'
+                    +        '<p class="post__content">' + data.text + '</p>'
+                    +    '</section>'
+                    + '</article>'; 
+        }
+    }
+/* ----- Templates end----- */
+
+
+
+/* ----- Handlers ----- */
 
     $new_post_form.submit(function (event) {
         event.preventDefault();
@@ -66,5 +87,11 @@
 
         if(content && content.length <= _new_post__size_limit)
             $api.add({'text': content}, (data) => console.log(data));
+    })
+
+    $api.get(undefined, function (posts) {
+        console.log('LOL', posts)
+        for(var i = 0; i < posts.length; i++)
+            $new_post_container.append($render.post(posts[i]));
     })
 })()
