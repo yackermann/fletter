@@ -194,7 +194,7 @@ Edit existing post
 
 * **Method:**
 
-     * `POST`
+     * `PUT`
     
 *  **URL Params**
 
@@ -257,4 +257,4 @@ Edit existing post
 
     ```javascript
     ```
-
+    
