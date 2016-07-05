@@ -1,3 +1,70 @@
+**Get Posts**
+----
+Returns json data of all posts.
+
+* **URL**
+
+    * /post/
+
+* **Method:**
+
+     * `GET`
+    
+*  **URL Params**
+
+    * None
+
+* **Data Params**
+
+    * None
+
+* **Success Response:**
+
+    * **Code:** 200 OK
+
+        ```javascript
+        {
+            status: "ok",
+            posts: [
+                {
+                    id: 1, 
+                    text: "asddsaads", 
+                    timestamp: 1467695707
+                }, 
+                {
+                    id: 2, 
+                    text: "dfsfdsfd", 
+                    timestamp: 1467695746
+                }
+            ]
+        }
+        ```
+ 
+* **Error Response:**
+
+    * **Code:** 500 INTERNATL ERROR
+
+        ```javascript
+        {  
+            status : "failed", 
+            error  : "Unknown error!"
+        }
+        ```
+
+* **Sample Call:**
+
+    ```javascript
+        $.ajax({
+            url: "/post/",
+            dataType: "json",
+            type : "GET",
+            success : function(response) {
+                console.log(response);
+            }
+        });
+    ```
+
+
 **Get Post**
 ----
 Returns json data about a single post.
