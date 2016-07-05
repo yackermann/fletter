@@ -8,20 +8,27 @@
     _new_post__size_limit = 140;
 
     var $make_request = function (URL, METHOD, DATA, CALLBACK) {
-        $.ajax({
-            url: URL,
-            type: METHOD,
-            data: DATA,
-            success: CALLBACK,
-            fail: function(err){
-                CALLBACK({'status': 'failed', 'error': err})
-            }
-        });
+
+        fetch(URL, {
+            method  : METHOD,
+            credentials : 'same-origin',
+            headers : {
+                'Accept'       : 'application/json',
+                'Content-Type' : 'application/json'
+            },
+            body    : JSON.stringify(DATA)
+        }).then(function (response) {
+            return response.json()
+        }).then(function (json) {
+            CALLBACK(json)
+        }).catch(function (err) {
+            CALLBACK({'status': 'failed', 'error': err})
+        })
     }
 
     var $api = {
         'add' : function (DATA) {
-            $make_request(_post_api_url, 'POST', DATA, (data) => console.log(data))
+            $make_request(_post_api_url, 'POST', DATA, (data) => console.log(data));
         },
 
         'get' : function (ID) {
@@ -29,7 +36,7 @@
             if(ID && typeof ID == 'number')
                 _URL += '/' + ID;
 
-            $make_request(_URL, 'GET', {}, (data) => console.log(data))
+            $make_request(_URL, 'GET', {}, (data) => console.log(data));
         }
     }
 
@@ -37,8 +44,7 @@
         event.preventDefault();
         var content = $(_new_post_field, this).val();
 
-        if(content && content.length <= _new_post__size_limit){
-            $api.add({'text': content})
-        }
+        if(content && content.length <= _new_post__size_limit)
+            $api.add({'text': content});
     })
 })()
