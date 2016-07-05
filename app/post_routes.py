@@ -5,11 +5,21 @@ app.url_map.strict_slashes = False
 
 @app.route('/post/', methods=['GET'])
 @app.route('/post/<int:post_id>', methods=['GET'])
-def get_post():
+def get_post(post_id=None):
     """Searches the database for entries, then displays them."""
-    posts = db.session.query(models.Post)
-    posts_json = [post.json() for post in posts]
-    return jsonify({'status' : 'ok'}, {'posts' : posts_json})
+    if post_id is None:
+        posts = db.session.query(models.Post)
+        posts_json = [post.json() for post in posts]
+        return jsonify({'status' : 'ok'}, {'posts' : posts_json})
+    else:
+        post = models.Post.query.get(post_id)
+
+        if post is None:
+            return jsonify({'status' : 'failed'}), 400
+
+        post_json = post.json()
+        return jsonify({'status' : 'ok'}, {'post' : post_json})
+
 
 @app.route('/post/', methods=['POST'])
 def add_post():
