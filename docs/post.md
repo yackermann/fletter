@@ -1,3 +1,13 @@
+**Post API Documentation**
+---
+
+* **Contents**
+    * [Get all posts](#get-posts)
+    * [Get post specified by ID](#get-post)
+    * [Add new post]()
+    * [Edit post specified by ID]()
+    * [Delete post specified by ID]()
+    
 **Get Posts**
 ----
 Returns json data of all posts.
