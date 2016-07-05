@@ -27,16 +27,36 @@
     }
 
     var $api = {
+        'get' : function (ID) {
+            _URL = _post_api_url;
+            if(ID && typeof ID === 'number')
+                _URL += '/' + ID;
+
+            $make_request(_URL, 'GET', {}, (data) => console.log(data));
+        },
+
         'add' : function (DATA) {
             $make_request(_post_api_url, 'POST', DATA, (data) => console.log(data));
         },
 
-        'get' : function (ID) {
-            _URL = _post_api_url;
-            if(ID && typeof ID == 'number')
-                _URL += '/' + ID;
 
-            $make_request(_URL, 'GET', {}, (data) => console.log(data));
+        'update' : function (ID, DATA) {
+            if (typeof ID !== 'number' || !DATA)
+                // throw Error
+            else {
+                _URL = _post_api_url + '/' + ID;
+                $make_request(_URL, 'PUT', DATA, (data) => console.log(data));
+            }
+        },
+
+        'delete' : function (ID) {
+            if (typeof ID !== number)
+                // throw Error
+                console.log('ID is no set')
+            else {
+                _URL = _post_api_url + '/' + ID;
+                $make_request(_URL, 'DELETE', {}, (data) => console.log(data));
+            }
         }
     }
 
