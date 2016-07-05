@@ -14,7 +14,7 @@ Returns json data of all posts.
 
 * **URL**
 
-    * /post/
+    * /post
 
 * **Method:**
 
@@ -64,6 +64,20 @@ Returns json data of all posts.
 * **Sample Call:**
 
     ```javascript
+        fetch('/post', {
+            method  : 'GET',
+            credentials : 'same-origin',
+            headers : {
+                'Accept'       : 'application/json',
+                'Content-Type' : 'application/json'
+            }
+        }).then(function (response) {
+            return response.json();
+        }).then(function (json) {
+            console.log(json);
+        }).catch(function (err) {
+            console.log({ 'status': 'failed', 'error': err });
+        })
     ```
 
 
@@ -116,6 +130,20 @@ Returns json data about a single post.
 * **Sample Call:**
 
     ```javascript
+        fetch('/post/32', {
+            method  : 'GET',
+            credentials : 'same-origin',
+            headers : {
+                'Accept'       : 'application/json',
+                'Content-Type' : 'application/json'
+            }
+        }).then(function (response) {
+            return response.json();
+        }).then(function (json) {
+            console.log(json);
+        }).catch(function (err) {
+            console.log({ 'status': 'failed', 'error': err });
+        })
     ```
 
 
@@ -182,6 +210,23 @@ Adds new post
 * **Sample Call:**
 
     ```javascript
+      fetch('/post', {
+            method  : 'POST',
+            credentials : 'same-origin',
+            headers : {
+                'Accept'       : 'application/json',
+                'Content-Type' : 'application/json'
+            },
+            body    : JSON.stringify({
+                'text' : 'I just ate potato!'
+            })
+        }).then(function (response) {
+            return response.json()
+        }).then(function (json) {
+            console.log(json)
+        }).catch(function (err) {
+            console.log({ 'status': 'failed', 'error': err })
+        })
     ```
 
 **Edit post**
@@ -256,6 +301,23 @@ Edit existing post
 * **Sample Call:**
 
     ```javascript
+        fetch('/post/23', {
+            method  : 'PUT',
+            credentials : 'same-origin',
+            headers : {
+                'Accept'       : 'application/json',
+                'Content-Type' : 'application/json'
+            },
+            body    : JSON.stringify({
+                'text' : 'Totally edited post!'
+            })
+        }).then(function (response) {
+            return response.json()
+        }).then(function (json) {
+            console.log(json)
+        }).catch(function (err) {
+            console.log({ 'status': 'failed', 'error': err })
+        })
     ```
 
 
@@ -304,5 +366,19 @@ Deletes existing post
 * **Sample Call:**
 
     ```javascript
+        fetch('/post/21', {
+            method  : 'DELETE',
+            credentials : 'same-origin',
+            headers : {
+                'Accept'       : 'application/json',
+                'Content-Type' : 'application/json'
+            }
+        }).then(function (response) {
+            return response.json()
+        }).then(function (json) {
+            console.log(json)
+        }).catch(function (err) {
+            console.log({ 'status': 'failed', 'error': err })
+        })
     ```
 
