@@ -17,7 +17,10 @@
     .post__content {
         margin: 0;
     }
-    .post__new_post-form {}
+
+    .post__new_post-form {
+
+    }
 
     .post__new_post {
         margin: 0;
@@ -27,6 +30,7 @@
         margin: 0;
         float: right;
     }
+    
     .post__spacer {
         margin: 0 auto;
     }
