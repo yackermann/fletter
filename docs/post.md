@@ -4,11 +4,11 @@
 * **Contents**
     * [Get all posts](#get-posts)
     * [Get post specified by ID](#get-post)
-    * [Add new post]()
+    * [Add new post](#add-new-post)
     * [Edit post specified by ID]()
     * [Delete post specified by ID]()
     
-**Get Posts**
+**Get posts**
 ----
 Returns json data of all posts.
 
@@ -64,18 +64,10 @@ Returns json data of all posts.
 * **Sample Call:**
 
     ```javascript
-        $.ajax({
-            url: "/post/",
-            dataType: "json",
-            type : "GET",
-            success : function(response) {
-                console.log(response);
-            }
-        });
     ```
 
 
-**Get Post**
+**Get post**
 ----
 Returns json data about a single post.
 
@@ -124,12 +116,71 @@ Returns json data about a single post.
 * **Sample Call:**
 
     ```javascript
-        $.ajax({
-            url: "/post/1",
-            dataType: "json",
-            type : "GET",
-            success : function(response) {
-                console.log(response);
-            }
-        });
     ```
+
+
+**Add new post**
+----
+Adds new post
+
+* **URL**
+
+    * /post
+
+* **Method:**
+
+     * `POST`
+    
+*  **URL Params**
+
+    * None
+
+* **Data Params**
+
+    ```javascript
+        {
+            text : 'Hello World!'
+        }
+    ```
+
+* **Success Response:**
+
+    * **Code:** 201 CREATED
+
+        ```javascript
+        {  
+            status : "ok", 
+            post   : { 
+                id   : 42,
+                text : "I just had an ice-cream.",
+                timestamp : 1467695707
+            }
+        }
+        ```
+ 
+* **Error Response:**
+
+    * **Code:** 400 BAD REQUEST
+
+        ```javascript
+        {  
+            status : "failed", 
+            error  : "Text is missing!"
+        }
+        ```
+
+    * **Code:** 413 REQUEST ENTITY TOO LARGE
+
+        ```javascript
+        {  
+            status : "failed", 
+            error  : "Text is longer than 140 chars!"
+        }
+        ```
+
+
+* **Sample Call:**
+
+    ```javascript
+    ```
+
