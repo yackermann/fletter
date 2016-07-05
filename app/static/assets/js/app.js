@@ -83,15 +83,22 @@
 
     $new_post_form.submit(function (event) {
         event.preventDefault();
-        var content = $(_new_post_field, this).val();
+        var input   = $(_new_post_field, this);
+        var content = input.val();
 
-        if(content && content.length <= _new_post__size_limit)
-            $api.add({'text': content}, (data) => console.log(data));
+        if(content && content.length <= _new_post__size_limit){
+            $api.add({'text': content}, function (response) {
+                if (response.status === 'ok') {
+                    input.val('');
+                    $new_post_container.append($render.post(response.post));
+                }
+            });
+        }
     })
 
-    $api.get(undefined, function (posts) {
-        console.log('LOL', posts)
-        for(var i = 0; i < posts.length; i++)
-            $new_post_container.append($render.post(posts[i]));
+    $api.get(undefined, function (response) {
+        if(response.status === 'ok')
+            for(var i = 0; i < response.posts.length; i++)
+                $new_post_container.append($render.post(response.posts[i]));
     })
 })()
