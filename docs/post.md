@@ -6,7 +6,7 @@
     * [Get post specified by ID](#get-post)
     * [Add new post](#add-new-post)
     * [Edit post specified by ID](#edit-post)
-    * [Delete post specified by ID]()
+    * [Delete post specified by ID](#delete-post)
     
 **Get posts**
 ----
