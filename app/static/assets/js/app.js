@@ -123,7 +123,7 @@
         var id = $(this).data('id');
         $api.delete(id, function (response) {
             if (response.status === 'ok') 
-                $('post-id-' + id).remove();
+                $('#post-id-' + id).remove();
         })
     })
 
