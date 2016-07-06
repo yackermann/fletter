@@ -127,6 +127,10 @@
         })
     })
 
+    $(document).on('closed.zf.reveal', function (e) {
+        $(_post_delete_confirmation_modal).empty();
+    })
+
     $api.get(undefined, function (response) {
         if(response.status === 'ok')
             for(var i = 0; i < response.posts.length; i++)
