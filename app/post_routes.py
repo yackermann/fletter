@@ -83,8 +83,8 @@ def edit_post(post_id):
     if not post.check_time():
         return jsonify({
             'status' : 'failed',
-            'error'  : 'FUUUUUUUUUU!'
-        }), 400
+            'error'  : 'You can not modify posts older than 120 seconds!'
+        }), 403
 
     post.text = content
     db.session.commit()
