@@ -80,6 +80,12 @@ def edit_post(post_id):
             'error'  : 'Text is missing!'
         }), 400
 
+    if not post.check_time():
+        return jsonify({
+            'status' : 'failed',
+            'error'  : 'FUUUUUUUUUU!'
+        }), 400
+
     post.text = content
     db.session.commit()
 
