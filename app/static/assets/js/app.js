@@ -8,7 +8,7 @@
     _new_post_field       = '.post__new_post';
     _new_post__size_limit = 140;
 
-    $post_delete_button             = $('.post__post_delete_button');
+    _post_delete_button             = '.post__post_delete_button';
     _post_delete_button_confirm     = '.post__confirm_delete_post';
     _post_delete_confirmation_modal = '#confmodal'
 
@@ -112,7 +112,7 @@
         }
     })
 
-    $post_delete_button.on('click', function (e) {
+    $(document).on('click', _post_delete_button, function (e) {
         var $parent = $(this.closest('.post'));
         var id      = $parent.data('id');
         var text    = $parent.find('.post__content').text();
