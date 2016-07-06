@@ -56,7 +56,7 @@
         },
 
         'delete' : function (ID, CALLBACK) {
-            if (typeof ID !== number){
+            if (typeof ID !== 'number'){
                 // throw Error
                 console.log('ID is no set');
             } else {
