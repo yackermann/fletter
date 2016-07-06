@@ -34,3 +34,11 @@
     .post__spacer {
         margin: 0 auto;
     }
+
+    .post__header_spacer {
+        margin: 0 auto;
+    }
+    
+    .post__post_delete_button {
+        float: right;
+    }

@@ -67,7 +67,9 @@
         'post' : function (data) {
             return '<article id="post-id-' + data.id + '" class="row medium-6 large-6 columns post">'
                     +    '<header>'
-                    +        '<h1 class="post__header"><a href="#">Bob Tester</a> | ' + data.timestamp + '</h1>'
+                    +        '<h1 class="post__header"><a href="#">Bob Tester</a> | ' 
+                    + data.timestamp + '<span class="post__header_spacer"></span>'
+                    +        '<a href="#" class="post__post_delete_button" title="Delete post">X</a></h1>'
                     +    '</header>'
                     +    '<section>'
                     +        '<p class="post__content">' + data.text + '</p>'
