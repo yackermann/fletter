@@ -18,8 +18,16 @@ class Post(db.Model):
         return '<post {}>'.format(self.id)
 
     def json(self):
+        """Return timestamp of the post"""
         return {
             'id' : self.id,
             'text' : self.text,
             'timestamp' : self.timestamp
         }
+
+    def check_time(self):
+        """Check difference between post's time and edit' time"""
+        if int(time()) - self.timestamp > 120:
+            return False
+
+        return True
