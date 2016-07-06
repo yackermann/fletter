@@ -41,6 +41,7 @@ def add_post():
             'status' : 'failed',
             'error'  : 'Text is longer than 140 chars!'
         }), 413
+        
     if len(content) == 0:
         return jsonify({
             'status' : 'failed',
