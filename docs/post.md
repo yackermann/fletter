@@ -297,11 +297,11 @@ Edit existing post
         }
         ```
 
-    * **Code:** 403 Forbidden
+    * **Code:** 403 FORBIDDEN
         ```javascript
         {  
             status : "failed", 
-            error  : "You can not modifie posts older than 120 seconds!"
+            error  : "You can not modify posts older than 120 seconds!"
         }
         ```
 
