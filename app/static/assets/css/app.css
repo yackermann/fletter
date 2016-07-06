@@ -42,3 +42,8 @@
     .post__post_delete_button {
         float: right;
     }
+
+    .post__delete_modal_confirmation_text {
+        padding: 1em;
+        border: 2px solid gray;
+    }
