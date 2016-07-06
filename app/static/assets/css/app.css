@@ -18,7 +18,7 @@
         margin: 0;
     }
 
-    .post__new_post-form {
+    .post__new_post_form {
 
     }
 
@@ -26,11 +26,24 @@
         margin: 0;
     }
 
-    .post__new_post-submit {
+    .post__new_post_submit {
         margin: 0;
         float: right;
     }
     
     .post__spacer {
         margin: 0 auto;
+    }
+
+    .post__header_spacer {
+        margin: 0 auto;
+    }
+    
+    .post__post_delete_button {
+        float: right;
+    }
+
+    .post__delete_modal_confirmation_text {
+        padding: 1em;
+        border: 2px solid gray;
     }
