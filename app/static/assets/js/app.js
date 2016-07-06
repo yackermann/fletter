@@ -8,6 +8,10 @@
     _new_post_field       = '.post__new_post';
     _new_post__size_limit = 140;
 
+    $post_delete_button             = $('.post__post_delete_button');
+    _post_delete_button_confirm     = '.post__confirm_delete_post';
+    _post_delete_confirmation_modal = '#confmodal'
+
     var $make_request = function (URL, METHOD, DATA, CALLBACK) {
 
         fetch(URL, {
@@ -65,7 +69,7 @@
 /* ----- Templates ----- */
     var $render = {
         'post' : function (data) {
-            return '<article id="post-id-' + data.id + '" class="row medium-6 large-6 columns post">'
+            return '<article data-id="' + data.id + '" id="post-id-' + data.id + '" class="row medium-6 large-6 columns post">'
                     +    '<header>'
                     +        '<h1 class="post__header"><a href="#">Bob Tester</a> | ' 
                     + data.timestamp + '<span class="post__header_spacer"></span>'
@@ -75,6 +79,16 @@
                     +        '<p class="post__content">' + data.text + '</p>'
                     +    '</section>'
                     + '</article>'; 
+        },
+
+        'delete_modal' : function (id, text) {
+            return     '<h2 class="lead">Are you sure you want to delete this post?</h2>'
+                    +  '<p class="post__delete_modal_confirmation_text">' + text + '</p>'
+                    +  '<a href="#" class="alert button post__confirm_delete_post" data-id="' + id + '" data-close>Delete post</a>'
+                    +  '<a href="#" class="success button" data-close>Cancel</a>'
+                    +  '<button class="close-button" data-close aria-label="Close reveal" type="button">'
+                    +      '<span aria-hidden="true">&times;</span>'
+                    +  '</button>'
         }
     }
 /* ----- Templates end----- */
@@ -96,6 +110,21 @@
                 }
             });
         }
+    })
+
+    $post_delete_button.on('click', function (e) {
+        var $parent = $(this.closest('.post'));
+        var id      = $parent.data('id');
+        var text    = $parent.find('.post__content').text();
+        $(_post_delete_confirmation_modal).html($render.delete_modal(id, text)).foundation('open');
+    })
+
+    $(document).on('click', _post_delete_button_confirm, function (e) {
+        var id = $(this).data('id');
+        $api.delete(id, function (response) {
+            if (response.status === 'ok') 
+                $('post-id-' + id).remove();
+        })
     })
 
     $api.get(undefined, function (response) {
