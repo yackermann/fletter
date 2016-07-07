@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
-import os
+import os, logging
+from logging import Formatter
 
 WTF_CSRF_ENABLED = True
 
@@ -18,3 +19,12 @@ DATABASE_PATH = os.path.join(basedir, DATABASE)
 # the database uri
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + DATABASE_PATH
 SQLALCHEMY_TRACK_MODIFICATIONS = 'True'
+
+# Configure logging
+LOG_FILE = 'tmp/logfile.log'
+LOG_LEVEL = logging.DEBUG
+
+logging.basicConfig(filename = LOG_FILE,
+                    level    = LOG_LEVEL)
+
+logging.getLogger().addHandler(logging.StreamHandler())
