@@ -8,7 +8,7 @@ app.url_map.strict_slashes = False
 def get_post(post_id=None):
     """Searches the database for entries, then displays them."""
     if post_id is None:
-        posts = db.session.query(models.Post)
+        posts = models.Post.query.all()
         posts_json = [post.json() for post in posts]
         posts_json.reverse()
         return jsonify({
