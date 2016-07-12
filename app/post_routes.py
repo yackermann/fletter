@@ -10,6 +10,7 @@ def get_post(post_id=None):
     if post_id is None:
         posts = db.session.query(models.Post)
         posts_json = [post.json() for post in posts]
+        posts_json.reverse()
         return jsonify({
             'status' : 'ok',
             'posts' : posts_json
