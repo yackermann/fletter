@@ -15,14 +15,18 @@ example_post_success = {
     'text' : 'Hello World!'
 }
 
+example_edited_post = {
+    'text' : 'Hello Hell!'
+}
+
 class APITest(unittest.TestCase):
 
     def setUp(self):
-        self.app = app
-        self.client = self.app.test_client()
+        self.app        = app
+        self.client     = self.app.test_client()
 
     def tearDown(self):
-        # Flush/drop database
+        #Flush/drop database
         models.Post.query.delete()
         db.session.commit()
 
@@ -86,7 +90,7 @@ class APITest(unittest.TestCase):
     def test_get_posts(self):
         """GET posts test"""
 
-        # ------------- SUCCESS Test GET empty posts ------------- #
+        # ------------- SUCCESS Test GET all posts ------------- #
         response = self.client.get('/post/')
 
         self.assertEqual(response.status_code, 200)
@@ -100,7 +104,7 @@ class APITest(unittest.TestCase):
 
         self.assertTrue(all(type(response_json[key]) == response_model[key] for key in response_model.keys()))
 
-        # ------------- SUCCESS Test GET some posts ------------- #
+        # ------------- SUCCESS Test GET some post ------------- #
         self.client.post('/post/', data=json.dumps(example_post_success), headers={
             'Content-Type' : 'application/json'
         })
@@ -117,6 +121,115 @@ class APITest(unittest.TestCase):
         post = response_json['posts'][0]
 
         self.assertTrue(all(type(post[key]) == post_model[key] for key in post_model.keys()))
+
+    def test_edit_post(self):
+        """Test for editing existing test"""
+
+        response = self.client.post('/post/', data=json.dumps(example_post_success), headers={
+            'Content-Type' : 'application/json'
+        })
+
+        # ------------- FAIL Test "Post not found!" ------------- #
+        response = self.client.put('/post/666', data=json.dumps(example_edited_post), headers={
+            'Content-Type' : 'application/json'
+        })
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.headers['Content-Type'], 'application/json')
+        response_json = json.loads(response.get_data(as_text=True))
+
+        self.assertDictEqual(response_json, {
+            'status' : 'failed',
+            'error'  : 'Post not found!'
+        })
+
+        # ------------- FAIL Test "TOO LARGE" ------------- #
+        response = self.client.put('/post/1', data=json.dumps(example_post_fail_too_long), headers={
+            'Content-Type' : 'application/json'
+        })
+        
+        self.assertEqual(response.status_code, 413)
+        self.assertEqual(response.headers['Content-Type'], 'application/json')
+        response_json = json.loads(response.get_data(as_text=True))
+
+        self.assertDictEqual(response_json, {
+            'status' : 'failed',
+            'error'  : 'Text is longer than 140 chars!'
+        })
+
+        # ------------- FAIL Test "TEXT MISSING" ------------- #
+        response = self.client.put('/post/1', data=json.dumps(example_post_fail_empty), headers={
+            'Content-Type' : 'application/json'
+        })
+        
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.headers['Content-Type'], 'application/json')
+        response_json = json.loads(response.get_data(as_text=True))
+
+        self.assertDictEqual(response_json, {
+            'status' : 'failed',
+            'error'  : 'Text is missing!'
+        })
+
+        # ------------- SUCCESS EDIT Test ------------- #
+        response = self.client.put('/post/1', data=json.dumps(example_edited_post), headers={
+            'Content-Type' : 'application/json'
+        })
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers['Content-Type'], 'application/json')
+        response_json = json.loads(response.get_data(as_text=True))
+
+        response_model = {
+            'status' : str,
+            'post' : dict
+        }
+
+        post_model = {
+            'id': int, 
+            'text': str, 
+            'timestamp': int
+        }
+
+        self.assertTrue(all(type(response_json[key]) == response_model[key] for key in response_model.keys()))
+
+        post = response_json['post']
+
+        self.assertTrue(all(type(post[key]) == post_model[key] for key in post_model.keys()))
+
+    def test_delete_post(self):
+        """Test for deleting test"""
+
+        response = self.client.post('/post/', data=json.dumps(example_post_success), headers={
+            'Content-Type' : 'application/json'
+        })
+
+        # ------------- SUCCESS Test DELETE post ------------- #
+        response = self.client.delete('/post/1', headers={
+            'Content-Type' : 'application/json'
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers['Content-Type'], 'application/json')
+        response_json = json.loads(response.get_data(as_text=True))
+
+        response_model = {'status' : str}
+
+        self.assertTrue(all(type(response_json[key]) == response_model[key] for key in response_model.keys()))
+
+        # ------------- FAILED Test DELETE post ------------- #
+        response = self.client.delete('/post/666', headers={
+            'Content-Type' : 'application/json'
+        })
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.headers['Content-Type'], 'application/json')
+        response_json = json.loads(response.get_data(as_text=True))
+
+        self.assertDictEqual(response_json, {
+            'status' : 'failed',
+            'error'  : 'Post not found!'
+        })
 
 if __name__ == '__main__':
     unittest.main()
