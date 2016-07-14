@@ -30,6 +30,13 @@ class APITest(unittest.TestCase):
         models.Post.query.delete()
         db.session.commit()
 
+    def my_assert_func (self, response, code):
+        """Chek response on status code, headers and return response_json for all tests"""
+        self.assertEqual(response.status_code, code)
+        self.assertEqual(response.headers['Content-Type'], 'application/json')
+        response_json = json.loads(response.get_data(as_text=True))
+        return response_json
+
     def test_add_post(self):
         """Test for adding new post"""
 
@@ -38,9 +45,7 @@ class APITest(unittest.TestCase):
             'Content-Type' : 'application/json'
         })
 
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.headers['Content-Type'], 'application/json')
-        response_json = json.loads(response.get_data(as_text=True))
+        response_json = self.my_assert_func(response, 400)
 
         self.assertDictEqual(response_json, {
             'status' : 'failed',
@@ -52,9 +57,7 @@ class APITest(unittest.TestCase):
             'Content-Type' : 'application/json'
         })
 
-        self.assertEqual(response.status_code, 413)
-        self.assertEqual(response.headers['Content-Type'], 'application/json')
-        response_json = json.loads(response.get_data(as_text=True))
+        response_json = self.my_assert_func(response, 413)
 
         self.assertDictEqual(response_json, {
             'status' : 'failed',
@@ -66,9 +69,7 @@ class APITest(unittest.TestCase):
             'Content-Type' : 'application/json'
         })
 
-        self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.headers['Content-Type'], 'application/json')
-        response_json = json.loads(response.get_data(as_text=True))
+        response_json = self.my_assert_func(response, 201)
 
         response_model = {
             'status' : str,
@@ -93,9 +94,7 @@ class APITest(unittest.TestCase):
         # ------------- SUCCESS Test GET all posts ------------- #
         response = self.client.get('/post/')
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.headers['Content-Type'], 'application/json')
-        response_json = json.loads(response.get_data(as_text=True))
+        response_json = self.my_assert_func(response, 200)
 
         response_model = {
             'status' : str,
@@ -134,9 +133,7 @@ class APITest(unittest.TestCase):
             'Content-Type' : 'application/json'
         })
 
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.headers['Content-Type'], 'application/json')
-        response_json = json.loads(response.get_data(as_text=True))
+        response_json = self.my_assert_func(response, 404)
 
         self.assertDictEqual(response_json, {
             'status' : 'failed',
@@ -148,9 +145,7 @@ class APITest(unittest.TestCase):
             'Content-Type' : 'application/json'
         })
         
-        self.assertEqual(response.status_code, 413)
-        self.assertEqual(response.headers['Content-Type'], 'application/json')
-        response_json = json.loads(response.get_data(as_text=True))
+        response_json = self.my_assert_func(response, 413)
 
         self.assertDictEqual(response_json, {
             'status' : 'failed',
@@ -162,9 +157,7 @@ class APITest(unittest.TestCase):
             'Content-Type' : 'application/json'
         })
         
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.headers['Content-Type'], 'application/json')
-        response_json = json.loads(response.get_data(as_text=True))
+        response_json = self.my_assert_func(response, 400)
 
         self.assertDictEqual(response_json, {
             'status' : 'failed',
@@ -176,9 +169,7 @@ class APITest(unittest.TestCase):
             'Content-Type' : 'application/json'
         })
         
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.headers['Content-Type'], 'application/json')
-        response_json = json.loads(response.get_data(as_text=True))
+        response_json = self.my_assert_func(response, 200)
 
         response_model = {
             'status' : str,
@@ -209,9 +200,7 @@ class APITest(unittest.TestCase):
             'Content-Type' : 'application/json'
         })
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.headers['Content-Type'], 'application/json')
-        response_json = json.loads(response.get_data(as_text=True))
+        response_json = self.my_assert_func(response,200)
 
         response_model = {'status' : str}
 
@@ -222,9 +211,7 @@ class APITest(unittest.TestCase):
             'Content-Type' : 'application/json'
         })
 
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.headers['Content-Type'], 'application/json')
-        response_json = json.loads(response.get_data(as_text=True))
+        response_json = self.my_assert_func(response, 404)
 
         self.assertDictEqual(response_json, {
             'status' : 'failed',
