@@ -41,8 +41,8 @@ def add_post():
     except:
         return jsonify({
             'status' : 'failed',
-            'error'  : 'Bad request!'
-        }), 400
+            'error'  : 'Unsupported media type!'
+        }), 415
 
     if len(content) > 140:
         return jsonify({
@@ -75,8 +75,8 @@ def edit_post(post_id):
     except:
         return jsonify({
             'status' : 'failed',
-            'error'  : 'Bad request!'
-        }), 400
+            'error'  : 'Unsupported media type!'
+        }), 415
 
     if post is None:
         return jsonify({
