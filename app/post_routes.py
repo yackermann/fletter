@@ -10,6 +10,7 @@ def get_post(post_id=None):
     if post_id is None:
         posts = db.session.query(models.Post)
         posts_json = [post.json() for post in posts]
+        posts_json.reverse()
         return jsonify({
             'status' : 'ok',
             'posts' : posts_json
@@ -35,7 +36,14 @@ def get_post(post_id=None):
 @app.route('/post/', methods=['POST'])
 def add_post():
     """Adds new post to the database."""
-    content = request.json.get('text', '')
+    try:
+        content = request.json.get('text', '')
+    except:
+        return jsonify({
+            'status' : 'failed',
+            'error'  : 'Unsupported media type!'
+        }), 415
+
     if len(content) > 140:
         return jsonify({
             'status' : 'failed',
@@ -61,7 +69,14 @@ def add_post():
 def edit_post(post_id):
     """Edit post in the database."""
     post = models.Post.query.get(post_id)
-    content = request.json.get('text', '')
+
+    try:
+        content = request.json.get('text', '')
+    except:
+        return jsonify({
+            'status' : 'failed',
+            'error'  : 'Unsupported media type!'
+        }), 415
 
     if post is None:
         return jsonify({
