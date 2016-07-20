@@ -8,7 +8,7 @@ class SecurityAPI():
     """Check API requests"""
 
     def request_verifying_json(self, func):
-    """Check request is it json or not"""
+        """Check request is it json or not"""
         @wraps(func)
         def wrapper(*args, **kwargs):
             if request.headers['Content-Type'] == 'application/json':
