@@ -1,7 +1,26 @@
 from app import app, models, db
 from flask import jsonify, abort, request
+from functools import wraps
 
 app.url_map.strict_slashes = False
+
+class SecurityAPI():
+    """Check API requests"""
+
+    def request_verifying_json(func):
+    """Check request is it json or not"""
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            if request.headers['Content-Type'] == 'application/json':
+                return func(*args, **kwargs)
+            else:
+                return jsonify({
+                    'status' : 'failed',
+                    'error'  : 'Unsupported media type!'
+                }), 415
+        return wrapper
+
+security = SecurityAPI
 
 @app.route('/post/', methods=['GET'])
 @app.route('/post/<int:post_id>', methods=['GET'])
@@ -34,15 +53,9 @@ def get_post(post_id=None):
 
 
 @app.route('/post/', methods=['POST'])
+@security.request_verifying_json
 def add_post():
-    """Adds new post to the database."""
-    try:
-        content = request.json.get('text', '')
-    except:
-        return jsonify({
-            'status' : 'failed',
-            'error'  : 'Unsupported media type!'
-        }), 415
+    content = request.json.get('text', '')
 
     if len(content) > 140:
         return jsonify({
@@ -66,17 +79,10 @@ def add_post():
     }), 201
 
 @app.route('/post/<int:post_id>', methods=['PUT'])
+@security.request_verifying_json
 def edit_post(post_id):
     """Edit post in the database."""
     post = models.Post.query.get(post_id)
-
-    try:
-        content = request.json.get('text', '')
-    except:
-        return jsonify({
-            'status' : 'failed',
-            'error'  : 'Unsupported media type!'
-        }), 415
 
     if post is None:
         return jsonify({
