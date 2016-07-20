@@ -233,7 +233,7 @@ class APITest(unittest.TestCase):
 
         self.assertTrue(all(type(response_json[key]) == response_model[key] for key in response_model.keys()))
 
-    def test_delete_post_success(self):
+    def test_delete_post_fail(self):
         """Test DELETE post : FAILED 'Post not found!'"""
 
         # create new post in db
