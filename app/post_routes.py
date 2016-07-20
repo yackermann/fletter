@@ -7,7 +7,7 @@ app.url_map.strict_slashes = False
 class SecurityAPI():
     """Check API requests"""
 
-    def request_verifying_json(func):
+    def request_verifying_json(self, func):
     """Check request is it json or not"""
         @wraps(func)
         def wrapper(*args, **kwargs):
@@ -20,7 +20,7 @@ class SecurityAPI():
                 }), 415
         return wrapper
 
-security = SecurityAPI
+security = SecurityAPI()
 
 @app.route('/post/', methods=['GET'])
 @app.route('/post/<int:post_id>', methods=['GET'])
