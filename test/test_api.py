@@ -37,10 +37,9 @@ class APITest(unittest.TestCase):
         response_json = json.loads(response.get_data(as_text=True))
         return response_json
 
-    def test_add_post(self):
-        """Test for adding new post"""
+    def test_add_post_fail_empty(self):
+        """Test FAILURE ADD new EMPTY post"""
 
-        # ------------- FAIL Test empty post ------------- #
         response = self.client.post('/post/', data=json.dumps(example_post_fail_empty), headers={
             'Content-Type' : 'application/json'
         })
@@ -52,7 +51,9 @@ class APITest(unittest.TestCase):
             'error'  : 'Text is missing!'
         })
 
-        # ------------- FAIL Test too large post ------------- #
+    def test_add_post_fail_large(self):
+        """Test FAILURE ADD new TOO LARGE post"""
+
         response = self.client.post('/post/', data=json.dumps(example_post_fail_too_long), headers={
             'Content-Type' : 'application/json'
         })
@@ -64,7 +65,9 @@ class APITest(unittest.TestCase):
             'error'  : 'Text is longer than 140 chars!'
         })
 
-        # ------------- SUCCESS Test post ------------- #
+    def test_add_post_success(self):
+        """Test SUCCESS ADD new post"""
+
         response = self.client.post('/post/', data=json.dumps(example_post_success), headers={
             'Content-Type' : 'application/json'
         })
@@ -88,10 +91,9 @@ class APITest(unittest.TestCase):
 
         self.assertTrue(all(type(post[key]) == post_model[key] for key in post_model.keys()))
 
-    def test_get_posts(self):
-        """GET posts test"""
+    def test_get_posts_success(self):
+        """Test SUCCESS GET all posts"""
 
-        # ------------- SUCCESS Test GET all posts ------------- #
         response = self.client.get('/post/')
 
         response_json = self.my_assert_func(response, 200)
@@ -103,7 +105,10 @@ class APITest(unittest.TestCase):
 
         self.assertTrue(all(type(response_json[key]) == response_model[key] for key in response_model.keys()))
 
-        # ------------- SUCCESS Test GET some post ------------- #
+    def test_get_post_success(self):
+        """Test SUCCESS GET one post"""
+
+        # create new post in db
         self.client.post('/post/', data=json.dumps(example_post_success), headers={
             'Content-Type' : 'application/json'
         })
@@ -121,9 +126,10 @@ class APITest(unittest.TestCase):
 
         self.assertTrue(all(type(post[key]) == post_model[key] for key in post_model.keys()))
 
-    def test_edit_post(self):
-        """Test for editing existing test"""
+    def test_edit_post_fail_not_found(self):
+        """Test EDIT post : FAILED 'Post not found!'"""
 
+        #create new post in db
         response = self.client.post('/post/', data=json.dumps(example_post_success), headers={
             'Content-Type' : 'application/json'
         })
@@ -140,7 +146,14 @@ class APITest(unittest.TestCase):
             'error'  : 'Post not found!'
         })
 
-        # ------------- FAIL Test "TOO LARGE" ------------- #
+    def test_edit_post_fail_large(self):
+        """Test EDIT post : FAILED 'Text is longer than 140 chars!'"""
+
+        #create new post in db
+        response = self.client.post('/post/', data=json.dumps(example_post_success), headers={
+            'Content-Type' : 'application/json'
+        })
+
         response = self.client.put('/post/1', data=json.dumps(example_post_fail_too_long), headers={
             'Content-Type' : 'application/json'
         })
@@ -152,7 +165,14 @@ class APITest(unittest.TestCase):
             'error'  : 'Text is longer than 140 chars!'
         })
 
-        # ------------- FAIL Test "TEXT MISSING" ------------- #
+    def test_edit_post_fail_empty(self):
+        """Test EDIT post : FAILED 'Text is missing!'"""
+
+        #create new post in db
+        response = self.client.post('/post/', data=json.dumps(example_post_success), headers={
+            'Content-Type' : 'application/json'
+        })
+
         response = self.client.put('/post/1', data=json.dumps(example_post_fail_empty), headers={
             'Content-Type' : 'application/json'
         })
@@ -164,7 +184,14 @@ class APITest(unittest.TestCase):
             'error'  : 'Text is missing!'
         })
 
-        # ------------- SUCCESS EDIT Test ------------- #
+    def test_edit_post_success(self):
+        """Test EDIT post : SUCCESS"""
+
+        #create new post in db
+        response = self.client.post('/post/', data=json.dumps(example_post_success), headers={
+            'Content-Type' : 'application/json'
+        })
+
         response = self.client.put('/post/1', data=json.dumps(example_edited_post), headers={
             'Content-Type' : 'application/json'
         })
@@ -188,14 +215,14 @@ class APITest(unittest.TestCase):
 
         self.assertTrue(all(type(post[key]) == post_model[key] for key in post_model.keys()))
 
-    def test_delete_post(self):
-        """Test for deleting test"""
+    def test_delete_post_success(self):
+        """Test DELETE post : SUCCESS"""
 
+        # create new post in db
         response = self.client.post('/post/', data=json.dumps(example_post_success), headers={
             'Content-Type' : 'application/json'
         })
 
-        # ------------- SUCCESS Test DELETE post ------------- #
         response = self.client.delete('/post/1', headers={
             'Content-Type' : 'application/json'
         })
@@ -206,7 +233,14 @@ class APITest(unittest.TestCase):
 
         self.assertTrue(all(type(response_json[key]) == response_model[key] for key in response_model.keys()))
 
-        # ------------- FAILED Test DELETE post ------------- #
+    def test_delete_post_success(self):
+        """Test DELETE post : FAILED 'Post not found!'"""
+
+        # create new post in db
+        response = self.client.post('/post/', data=json.dumps(example_post_success), headers={
+            'Content-Type' : 'application/json'
+        })
+
         response = self.client.delete('/post/666', headers={
             'Content-Type' : 'application/json'
         })
